@@ -1,0 +1,428 @@
+@import "tailwindcss";
+
+:root {
+  --px: clamp(1px, min(100vw / 1728, 100vh / 680), 1.6px);
+  --font-funnel: "Funnel Display", "Helvetica Neue", Arial, sans-serif;
+  --font-archivo: "Archivo", "Helvetica Neue", Arial, sans-serif;
+  --font-space: "Space Grotesk", "Helvetica Neue", Arial, sans-serif;
+
+  --canvas: #EFEEEB;
+  --ink: #0A0A0A;
+  --muted: #6B6862;
+  --accent: #D12424;
+  --rule: #CCC9C4;
+  --chip: #B8B5B0;
+
+  --night: #0D0D0B;
+  --night-body: #BFBAB2;
+  --night-muted: #9E9991;
+  --night-hr: #918E89;
+  --night-chip: rgba(102, 102, 102, 0.1);
+
+  --wave-dim: rgba(10, 10, 10, 0.2);
+  --wave-flash: #D12424;
+  --wave-lit: #0A0A0A;
+}
+
+@layer base {
+  html {
+    font-family: var(--font-funnel);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    -webkit-text-size-adjust: 100%;
+    scrollbar-gutter: stable;
+  }
+
+  html.lenis,
+  html.lenis body {
+    height: auto;
+  }
+
+  .lenis:not(.lenis-autoToggle).lenis-stopped {
+    overflow: clip;
+  }
+
+  .lenis [data-lenis-prevent],
+  .lenis [data-lenis-prevent-wheel],
+  .lenis [data-lenis-prevent-touch],
+  .lenis [data-lenis-prevent-vertical],
+  .lenis [data-lenis-prevent-horizontal] {
+    overscroll-behavior: contain;
+  }
+
+  .lenis.lenis-smooth iframe {
+    pointer-events: none;
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    html:not(.lenis) {
+      scroll-behavior: smooth;
+    }
+  }
+
+  body {
+    background-color: var(--canvas);
+    color: var(--ink);
+    text-wrap: pretty;
+    overflow-x: hidden;
+  }
+
+  h1, h2, h3 {
+    text-wrap: balance;
+  }
+
+  ::selection {
+    background-color: var(--accent);
+    color: #ffffff;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
+    border-radius: 2px;
+  }
+}
+
+/* Color & Surface Tokens */
+.bg-canvas { background-color: var(--canvas); }
+.bg-ink { background-color: var(--ink); }
+.bg-night { background-color: var(--night); }
+.bg-rule { background-color: var(--rule); }
+.bg-accent { background-color: var(--accent); }
+.text-canvas { color: var(--canvas); }
+.text-ink { color: var(--ink); }
+.text-muted { color: var(--muted); }
+.text-accent { color: var(--accent); }
+.text-night { color: var(--night); }
+.text-night-body { color: var(--night-body); }
+.text-night-muted { color: var(--night-muted); }
+.border-ink { border-color: var(--ink); }
+.border-chip { border-color: var(--chip); }
+.border-rule { border-color: var(--rule); }
+
+/* Font Family Helpers */
+.font-funnel { font-family: var(--font-funnel); }
+.font-archivo { font-family: var(--font-archivo); }
+.font-space { font-family: var(--font-space); }
+
+/* Responsive Proportional Layout */
+.max-w-canvas {
+  max-width: calc(1440 * var(--px));
+}
+
+@media (min-width: 1024px) {
+  .lg\:px-margin {
+    padding-left: 4rem;
+    padding-right: 4rem;
+  }
+}
+
+/* Typographic Scale */
+.text-display {
+  font-size: clamp(2.25rem, 6.944vw, 6.25rem);
+  line-height: 0.88;
+  letter-spacing: -0.03em;
+}
+
+@media (max-width: 639px) {
+  [data-hero-name] {
+    font-size: min(25.5vw - 12px, 6.25rem);
+  }
+}
+
+.text-section {
+  font-size: clamp(2rem, 7.222vw, 6.5rem);
+  line-height: 1;
+  letter-spacing: -0.02em;
+}
+
+.text-project {
+  font-size: clamp(1.625rem, 4.167vw, 3.75rem);
+  line-height: 1.05;
+  letter-spacing: -0.015em;
+}
+
+.text-lead,
+.text-subhead {
+  font-size: clamp(1.3125rem, 2.778vw, 2.5rem);
+  line-height: 1.2;
+  letter-spacing: -0.015em;
+}
+
+.text-body-lg {
+  font-size: clamp(1.0625rem, 1.25vw, 1.125rem);
+  line-height: 1.5;
+  letter-spacing: -0.01em;
+}
+
+.text-body {
+  font-size: clamp(0.9375rem, 1.111vw, 1rem);
+  line-height: 1.55;
+  letter-spacing: -0.01em;
+}
+
+.text-label {
+  font-size: clamp(0.6875rem, 0.833vw, 0.75rem);
+  line-height: 1.4;
+  letter-spacing: 0.06em;
+}
+
+.ease-out-soft {
+  transition-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* Keyframes */
+@keyframes marquee {
+  0% { transform: translate3d(0, 0, 0); }
+  100% { transform: translate3d(-50%, 0, 0); }
+}
+
+@keyframes page-enter {
+  0% { opacity: 0; transform: translate3d(0, calc(10 * var(--px)), 0); }
+  100% { opacity: 1; transform: none; }
+}
+
+@keyframes loader-letter-in {
+  0% { transform: translateY(110%); }
+  100% { transform: none; }
+}
+
+@keyframes loader-letter-out {
+  0% { opacity: 1; transform: none; }
+  100% { opacity: 0; transform: translateY(-60%); }
+}
+
+@keyframes loader-chip {
+  0% { opacity: 0; transform: translate(-50%) scale(0.82); }
+  100% { opacity: 1; transform: translate(-50%) scale(1); }
+}
+
+@keyframes char-wave {
+  0% {
+    color: var(--wave-dim);
+    animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  30% {
+    color: var(--wave-flash);
+    animation-timing-function: cubic-bezier(0.55, 0, 1, 0.45);
+  }
+  100% {
+    color: var(--wave-lit);
+  }
+}
+
+@keyframes hw-sweep {
+  0% {
+    color: var(--hw-base, currentColor);
+    animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  45% {
+    color: var(--wave-flash);
+    animation-timing-function: cubic-bezier(0.55, 0, 1, 0.45);
+  }
+  100% {
+    color: currentColor;
+  }
+}
+
+@keyframes hw-appear {
+  0% {
+    color: transparent;
+    animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  45% {
+    color: var(--wave-flash);
+    animation-timing-function: cubic-bezier(0.55, 0, 1, 0.45);
+  }
+  100% {
+    color: currentColor;
+  }
+}
+
+@keyframes door-grow-upper {
+  0% { opacity: 0; transform: scaleX(0); width: 0; }
+  3% { opacity: 1; }
+  12% { opacity: 1; transform: scaleX(1); width: 0.68em; }
+  36% { opacity: 1; transform: scaleX(1); width: 0.68em; }
+  45% { opacity: 0; transform: scaleX(0); width: 0; }
+  100% { opacity: 0; transform: scaleX(0); width: 0; }
+}
+
+/* Scroll Reveal */
+.reveal {
+  transition: transform 0.7s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.65s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.reveal[data-reveal="waiting"] {
+  opacity: 0;
+  transform: translate3d(0, calc(13 * var(--px)), 0);
+  will-change: transform, opacity;
+  transition: none;
+}
+
+/* Marquee */
+.marquee-wrapper {
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.marquee-track {
+  display: inline-flex;
+  width: max-content;
+  will-change: transform;
+  animation: 38s linear infinite marquee;
+}
+
+.marquee-wrapper:hover .marquee-track {
+  animation-play-state: paused;
+}
+
+/* Hover Character Wave */
+[data-hw-char]::before {
+  content: attr(data-ch);
+}
+
+[data-hw] [data-hw-char] {
+  transition: color 0.2s linear;
+}
+
+@media (hover: hover) {
+  [data-hw]:is(:hover, [data-hw-on="true"]) [data-hw-char] {
+    animation: 0.42s both hw-sweep;
+    animation-delay: calc(var(--hwi, 0) * 16ms);
+  }
+  [data-hw-appear]:not(:hover):not([data-hw-on="true"]) [data-hw-char] {
+    color: transparent;
+  }
+  [data-hw-appear]:is(:hover, [data-hw-on="true"]) [data-hw-char] {
+    animation: 0.42s both hw-appear;
+    animation-delay: calc(var(--hwi, 0) * 16ms);
+  }
+}
+
+/* Scroll Wave Characters */
+[data-wave] [data-char] {
+  color: var(--wave-dim);
+  transition: color 0.22s linear;
+}
+
+[data-wave] [data-char][data-lit="true"] {
+  color: var(--wave-lit);
+  animation: 0.45s both char-wave;
+}
+
+/* Door Animation (Contact Card) */
+.door-add {
+  display: inline-block;
+  width: 0;
+  opacity: 0;
+  overflow: hidden;
+  vertical-align: bottom;
+  transform-origin: left center;
+  transform: scaleX(0);
+}
+
+.door-add-upper::before {
+  content: "O";
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  [data-door-open="true"] .door-add-upper {
+    animation: 5.5s infinite cubic-bezier(0.55, 0, 0.25, 1) door-grow-upper;
+  }
+}
+
+/* Hero 3D Intro */
+@media (prefers-reduced-motion: no-preference) {
+  [data-hero-3d],
+  [data-hero-3d-lines] > * {
+    transform-origin: 50% 100%;
+    transition:
+      transform 0.95s cubic-bezier(0.16, 1, 0.3, 1) calc(var(--h3d, 0ms) + var(--h3d-i, 0ms)),
+      opacity 0.7s cubic-bezier(0.33, 1, 0.68, 1) calc(var(--h3d, 0ms) + var(--h3d-i, 0ms));
+  }
+  [data-hero-3d="portrait"] {
+    transform-origin: 60% 60%;
+  }
+  [data-hero-3d-lines] > :nth-child(2) {
+    --h3d-i: 90ms;
+  }
+  [data-hero-3d-lines] > :nth-child(3) {
+    --h3d-i: 180ms;
+  }
+  [data-loading="true"] [data-hero-3d],
+  [data-loading="true"] [data-hero-3d-lines] > * {
+    opacity: 0;
+    transition: none;
+  }
+  [data-loading="true"] [data-hero-3d-lines] > * {
+    transform: perspective(calc(900 * var(--px))) rotateX(44deg) translateY(calc(46 * var(--px)));
+  }
+  [data-loading="true"] [data-hero-3d="portrait"] {
+    transform: perspective(calc(1400 * var(--px))) rotateY(-10deg) rotateX(6deg) translateY(calc(34 * var(--px))) scale(1.06);
+  }
+}
+
+/* Fullscreen Menu Drawer */
+[data-menu] {
+  transition: transform 0.42s cubic-bezier(0.65, 0, 0.35, 1), visibility 0s linear 0.42s;
+}
+[data-menu="closed"] {
+  visibility: hidden;
+  pointer-events: none;
+  transform: translate3d(100%, 0, 0);
+}
+[data-menu="open"] {
+  visibility: visible;
+  transform: translate3d(0, 0, 0);
+  transition: transform 0.62s cubic-bezier(0.22, 1, 0.36, 1), visibility 0s linear 0s;
+}
+[data-menu-scrim] {
+  transition: opacity 0.42s cubic-bezier(0.22, 1, 0.36, 1), visibility 0s linear 0.42s;
+}
+[data-menu-scrim="closed"] {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+[data-menu-scrim="open"] {
+  opacity: 1;
+  visibility: visible;
+  transition: opacity 0.62s cubic-bezier(0.22, 1, 0.36, 1), visibility 0s linear 0s;
+}
+[data-menu-item] {
+  display: block;
+  overflow: hidden;
+}
+[data-menu-item] > * {
+  transition:
+    opacity 0.64s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.64s cubic-bezier(0.22, 1, 0.36, 1);
+}
+[data-menu="open"] [data-menu-item] > * {
+  transition-delay: calc(0.18s + var(--menu-i, 0) * 55ms);
+}
+[data-menu="closed"] [data-menu-item] > * {
+  opacity: 0;
+  transition-duration: 0.26s;
+  transition-delay: 0s;
+  transform: translateY(105%);
+}
+
+/* Custom Cursor Press State */
+[data-cursor="down"] #custom-cursor-ring {
+  transform: scale(0.76);
+}
+
+/* Reduced Motion */
+@media (prefers-reduced-motion: reduce) {
+  .marquee-track { animation: none; }
+  [data-menu], [data-menu-scrim], [data-menu-item] > * { transition: none; }
+  [data-menu="closed"] { transform: none; }
+  [data-wave] [data-char] { color: var(--wave-lit); animation: none; }
+  .reveal, .reveal[data-reveal="waiting"] { opacity: 1; transform: none; transition: none; }
+}
+
+.page-enter {
+  animation: page-enter 0.45s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
