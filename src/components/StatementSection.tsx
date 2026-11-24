@@ -96,15 +96,17 @@ export const StatementSection: React.FC = () => {
                     aria-hidden="true"
                     className="mb-6 block w-[42%] sm:float-right sm:mb-2 sm:ml-8 sm:mt-2 sm:w-[26%] sm:max-w-[calc(206*var(--px))] lg:ml-10 lg:w-[19%]"
                   >
-                    <span className="pointer-events-none relative flex aspect-square -rotate-[6deg] flex-col items-center justify-center overflow-hidden bg-night p-4 shadow-[0_18px_40px_-12px_rgba(10,10,10,0.28)]">
+                    <span className="pointer-events-none relative block aspect-square -rotate-[6deg] overflow-hidden bg-transparent shadow-[0_18px_40px_-12px_rgba(10,10,10,0.22)]">
                       <img
                         src={PORTFOLIO_DATA.assets.portrait}
                         alt="Janindu Dilshan De Alwis"
                         referrerPolicy="no-referrer"
-                        className="h-24 w-24 rounded-full border border-white/20 object-cover sm:h-28 sm:w-28"
+                        className="block h-full w-full scale-[1.01] object-cover object-top"
                       />
-                      <span className="mt-3 font-space text-[10px] uppercase tracking-[0.12em] text-night-muted">
-                        Colombo · USJ
+                      <span className="absolute inset-x-0 bottom-0 flex items-center bg-gradient-to-t from-black/65 via-black/25 to-transparent px-3 pb-2.5 pt-6">
+                        <span className="font-space text-[10px] uppercase tracking-[0.12em] text-white/90">
+                          Colombo · USJ
+                        </span>
                       </span>
                     </span>
                   </span>
@@ -127,19 +129,13 @@ export const StatementSection: React.FC = () => {
 
                 <div className="pt-8 lg:flex lg:gap-x-[calc(45*var(--px))] lg:pt-[calc(20*var(--px))]">
                   <Reveal className="hidden lg:block lg:w-[calc(305*var(--px))] lg:shrink-0">
-                    <div className="group relative aspect-[640/372] w-full overflow-hidden rounded-[2px] bg-night">
+                    <div className="group relative aspect-video w-full overflow-hidden rounded-[2px] bg-night">
                       <img
-                        src={PORTFOLIO_DATA.projects[1].coverImage}
-                        alt="Full-Stack, AI & IoT Projects"
+                        src={PORTFOLIO_DATA.assets.stackVisual}
+                        alt="Web, Mobile, AI & IoT Stack and Technologies"
                         referrerPolicy="no-referrer"
-                        className="h-full w-full object-cover opacity-85 transition-transform duration-700 ease-out-soft group-hover:scale-105"
+                        className="h-full w-full object-cover transition-transform duration-700 ease-out-soft group-hover:scale-105"
                       />
-                      <div className="absolute inset-0 flex items-end justify-between bg-gradient-to-t from-black/80 via-transparent to-transparent p-3">
-                        <span className="font-archivo text-[11px] uppercase tracking-[0.08em] text-white/90">
-                          Web · Mobile · AI · IoT
-                        </span>
-                        <span className="h-2 w-2 rounded-full bg-accent" aria-hidden="true" />
-                      </div>
                     </div>
                   </Reveal>
 

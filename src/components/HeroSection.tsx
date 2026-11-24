@@ -1,7 +1,17 @@
 import React, { useEffect, useRef } from 'react';
+import {
+  Bot,
+  Code2,
+  Cpu,
+  Database,
+  Radio,
+  Smartphone,
+  Terminal,
+  Workflow,
+  type LucideIcon,
+} from 'lucide-react';
 import { PORTFOLIO_DATA } from '../data/portfolioData';
 import { Navbar, RoutePath } from './Navbar';
-import { HoverWaveText } from './HoverWaveText';
 
 interface HeroSectionProps {
   menuOpen: boolean;
@@ -9,16 +19,65 @@ interface HeroSectionProps {
   onNavigate: (route: RoutePath) => void;
 }
 
-const TRAIL_IMAGES = [
-  PORTFOLIO_DATA.projects[0].coverImage,
-  PORTFOLIO_DATA.projects[1].coverImage,
-  PORTFOLIO_DATA.projects[2].coverImage,
-  PORTFOLIO_DATA.projects[3].coverImage,
-  PORTFOLIO_DATA.assets.labVisualOne,
-  PORTFOLIO_DATA.assets.labVisualTwo,
+interface TrailIconItem {
+  id: string;
+  label: string;
+  Icon: LucideIcon;
+  cardClass: string;
+}
+
+const TRAIL_ICONS: TrailIconItem[] = [
+  {
+    id: 'react-next',
+    label: 'React / Next',
+    Icon: Code2,
+    cardClass: 'border-white/20 bg-night text-canvas',
+  },
+  {
+    id: 'mobile-expo',
+    label: 'Mobile',
+    Icon: Smartphone,
+    cardClass: 'border-ink/20 bg-canvas text-ink',
+  },
+  {
+    id: 'ai-agents',
+    label: 'AI Agents',
+    Icon: Bot,
+    cardClass: 'border-accent bg-accent text-white',
+  },
+  {
+    id: 'iot-esp',
+    label: 'IoT / ESP',
+    Icon: Cpu,
+    cardClass: 'border-white/20 bg-night text-canvas',
+  },
+  {
+    id: 'databases',
+    label: 'Databases',
+    Icon: Database,
+    cardClass: 'border-ink/20 bg-canvas text-ink',
+  },
+  {
+    id: 'n8n-flow',
+    label: 'n8n Flow',
+    Icon: Workflow,
+    cardClass: 'border-white/20 bg-night text-canvas',
+  },
+  {
+    id: 'typescript',
+    label: 'TypeScript',
+    Icon: Terminal,
+    cardClass: 'border-accent bg-accent text-white',
+  },
+  {
+    id: 'mqtt',
+    label: 'MQTT',
+    Icon: Radio,
+    cardClass: 'border-ink/20 bg-canvas text-ink',
+  },
 ];
 
-const POOL_SIZE = 6;
+const POOL_SIZE = TRAIL_ICONS.length;
 const MAX_ACTIVE_TRAIL = 4;
 
 // Cropping region [47%..95%] of the 1704x923 cover asset excludes left baked text and right ribbon
@@ -43,11 +102,10 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
 
     const slots = Array.from(container.children).map((el) => ({
       el: el as HTMLDivElement,
-      img: el.querySelector('img') as HTMLImageElement,
+      card: el.querySelector('[data-trail-card]') as HTMLDivElement,
       anim: null as Animation | null,
     }));
 
-    let imgCursor = -1;
     let slotCursor = 0;
     let lastX = 0;
     let lastY = 0;
@@ -62,7 +120,6 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
     };
 
     const spawn = (x: number, y: number) => {
-      imgCursor = (imgCursor + 1) % TRAIL_IMAGES.length;
       const slot = slots[slotCursor];
       slotCursor = (slotCursor + 1) % POOL_SIZE;
 
@@ -72,19 +129,18 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
       }
 
       if (slot.anim) slot.anim.cancel();
-      slot.img.src = TRAIL_IMAGES[imgCursor];
 
       const tilt = (Math.random() - 0.5) * 9;
       slot.el.style.transform = `translate3d(${x}px, ${y}px, 0) translate(-50%, -50%) rotate(${tilt}deg)`;
-      slot.img.style.opacity = '1';
+      slot.card.style.opacity = '1';
 
       // Diagonal linear-gradient mask wipe matching pamidordesign.co
-      slot.anim = slot.img.animate(
+      slot.anim = slot.card.animate(
         [
-          { maskPosition: '100% 0%', opacity: 0.95, transform: 'scale(0.94)' },
+          { maskPosition: '100% 0%', opacity: 0.95, transform: 'scale(0.92)' },
           { maskPosition: '40% 0%', opacity: 1, transform: 'scale(1)', offset: 0.35 },
           { maskPosition: '35% 0%', opacity: 1, transform: 'scale(1)', offset: 0.65 },
-          { maskPosition: '-60% 0%', opacity: 0, transform: 'scale(0.97)' },
+          { maskPosition: '-60% 0%', opacity: 0, transform: 'scale(0.96)' },
         ],
         {
           duration: 840,
@@ -95,7 +151,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
 
       active.push(slot);
       slot.anim.onfinish = () => {
-        slot.img.style.opacity = '0';
+        slot.card.style.opacity = '0';
         const idx = active.indexOf(slot);
         if (idx !== -1) active.splice(idx, 1);
       };
@@ -104,7 +160,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
     const onPointerMove = (e: PointerEvent) => {
       if (e.pointerType !== 'mouse') return;
       const now = performance.now();
-      const rect = parent.getBoundingClientRect();
+      const rect = container.getBoundingClientRect();
       const x = e.clientX - rect.left;
       const y = e.clientY - rect.top;
       const dist = Math.hypot(x - lastX, y - lastY);
@@ -158,17 +214,15 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
             aria-hidden="true"
             className="pointer-events-none absolute inset-0 z-10"
           >
-            {Array.from({ length: POOL_SIZE }).map((_, i) => (
+            {TRAIL_ICONS.map(({ id, label, Icon, cardClass }) => (
               <div
-                key={i}
+                key={id}
                 className="absolute left-0 top-0"
-                style={{ width: 'calc(132 * var(--px))' }}
+                style={{ width: 'calc(88 * var(--px))', height: 'calc(88 * var(--px))' }}
               >
-                <img
-                  src={TRAIL_IMAGES[i % TRAIL_IMAGES.length]}
-                  alt=""
-                  referrerPolicy="no-referrer"
-                  className="aspect-[4/3] h-auto w-full object-cover opacity-0 shadow-2xl"
+                <div
+                  data-trail-card="true"
+                  className={`flex h-full w-full flex-col items-center justify-center gap-1.5 border opacity-0 shadow-2xl ${cardClass}`}
                   style={{
                     WebkitMaskImage:
                       'linear-gradient(105deg, #000 45%, rgba(0, 0, 0, 0) 62%)',
@@ -181,7 +235,12 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
                     WebkitMaskPosition: '100% 0%',
                     maskPosition: '100% 0%',
                   }}
-                />
+                >
+                  <Icon className="h-7 w-7" strokeWidth={1.6} />
+                  <span className="font-space text-[9px] font-medium uppercase tracking-[0.08em] opacity-80">
+                    {label}
+                  </span>
+                </div>
               </div>
             ))}
           </div>

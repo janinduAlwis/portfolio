@@ -88,12 +88,18 @@ export const ArtShopView: React.FC<ArtShopViewProps> = ({ onNavigate }) => {
               key={item.id}
               className="group flex flex-col border border-rule bg-canvas p-5 transition-colors duration-200 hover:border-ink"
             >
-              <div className="relative aspect-[16/10] overflow-hidden bg-night/5">
+              <div
+                className={`relative aspect-[16/10] overflow-hidden ${
+                  item.imageFit === 'contain' ? 'bg-white' : 'bg-night/5'
+                }`}
+              >
                 <img
                   src={item.image}
                   alt={item.title}
                   referrerPolicy="no-referrer"
-                  className="h-full w-full object-cover transition-transform duration-700 ease-out-soft group-hover:scale-[1.03]"
+                  className={`h-full w-full transition-transform duration-700 ease-out-soft group-hover:scale-[1.03] ${
+                    item.imageFit === 'contain' ? 'object-contain p-1' : 'object-cover'
+                  }`}
                 />
               </div>
 

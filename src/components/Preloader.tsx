@@ -131,7 +131,7 @@ export const Preloader: React.FC<PreloaderProps> = ({ onComplete }) => {
         >
           {CHIP_IMAGES.map((src, idx) => (
             <img
-              key={src}
+              key={`${src}-${idx}`}
               src={src}
               alt=""
               referrerPolicy="no-referrer"

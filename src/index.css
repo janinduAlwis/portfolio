@@ -1,5 +1,17 @@
 @import "tailwindcss";
 
+@theme {
+  --color-canvas: #EFEEEB;
+  --color-ink: #0A0A0A;
+  --color-muted: #6B6862;
+  --color-accent: #D12424;
+  --color-rule: #CCC9C4;
+  --color-chip: #B8B5B0;
+  --color-night: #0D0D0B;
+  --color-night-body: #BFBAB2;
+  --color-night-muted: #9E9991;
+}
+
 :root {
   --px: clamp(1px, min(100vw / 1728, 100vh / 680), 1.6px);
   --font-funnel: "Funnel Display", "Helvetica Neue", Arial, sans-serif;
@@ -64,7 +76,7 @@
     background-color: var(--canvas);
     color: var(--ink);
     text-wrap: pretty;
-    overflow-x: hidden;
+    overflow-x: clip;
   }
 
   h1, h2, h3 {
@@ -76,29 +88,17 @@
     color: #ffffff;
   }
 
+  button:not(:disabled),
+  [role="button"]:not([aria-disabled="true"]) {
+    cursor: pointer;
+  }
+
   :focus-visible {
     outline: 2px solid var(--accent);
     outline-offset: 3px;
     border-radius: 2px;
   }
 }
-
-/* Color & Surface Tokens */
-.bg-canvas { background-color: var(--canvas); }
-.bg-ink { background-color: var(--ink); }
-.bg-night { background-color: var(--night); }
-.bg-rule { background-color: var(--rule); }
-.bg-accent { background-color: var(--accent); }
-.text-canvas { color: var(--canvas); }
-.text-ink { color: var(--ink); }
-.text-muted { color: var(--muted); }
-.text-accent { color: var(--accent); }
-.text-night { color: var(--night); }
-.text-night-body { color: var(--night-body); }
-.text-night-muted { color: var(--night-muted); }
-.border-ink { border-color: var(--ink); }
-.border-chip { border-color: var(--chip); }
-.border-rule { border-color: var(--rule); }
 
 /* Font Family Helpers */
 .font-funnel { font-family: var(--font-funnel); }
@@ -213,7 +213,7 @@
 
 @keyframes hw-sweep {
   0% {
-    color: var(--hw-base, currentColor);
+    color: currentColor;
     animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
   }
   45% {
@@ -283,12 +283,13 @@
 }
 
 [data-hw] [data-hw-char] {
-  transition: color 0.2s linear;
+  color: inherit;
 }
 
 @media (hover: hover) {
-  [data-hw]:is(:hover, [data-hw-on="true"]) [data-hw-char] {
-    animation: 0.42s both hw-sweep;
+  [data-hw]:not([data-hw-controlled]):is(:hover, [data-hw-on="true"]) [data-hw-char],
+  [data-hw][data-hw-controlled][data-hw-on="true"] [data-hw-char] {
+    animation: 0.42s hw-sweep;
     animation-delay: calc(var(--hwi, 0) * 16ms);
   }
   [data-hw-appear]:not(:hover):not([data-hw-on="true"]) [data-hw-char] {

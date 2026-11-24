@@ -144,25 +144,27 @@ export const Navbar: React.FC<NavbarProps> = ({
               ))}
             </ul>
 
-            <div data-menu-item="true" style={{ '--menu-i': 5 } as React.CSSProperties} className="mt-12 flex flex-wrap items-center gap-8">
-              <a
-                tabIndex={menuOpen ? 0 : -1}
-                data-hw="true"
-                href={`mailto:${PORTFOLIO_DATA.brand.email}`}
-                className="inline-flex min-h-[44px] items-center py-2 text-body text-muted underline underline-offset-4 transition-colors [--hw-base:#6B6862] hover:text-ink"
-              >
-                <HoverWaveText text={PORTFOLIO_DATA.brand.email.toUpperCase()} />
-              </a>
+            <div data-menu-item="true" style={{ '--menu-i': 5 } as React.CSSProperties} className="mt-12">
+              <div className="flex flex-wrap items-center gap-x-10 gap-y-4 sm:gap-x-14">
+                <a
+                  tabIndex={menuOpen ? 0 : -1}
+                  data-hw="true"
+                  href={`mailto:${PORTFOLIO_DATA.brand.email}`}
+                  className="inline-flex min-h-[44px] items-center py-2 text-body text-muted underline underline-offset-4 transition-colors [--hw-base:#6B6862] hover:text-ink"
+                >
+                  <HoverWaveText text={PORTFOLIO_DATA.brand.email.toUpperCase()} />
+                </a>
 
-              <a
-                tabIndex={menuOpen ? 0 : -1}
-                href={PORTFOLIO_DATA.brand.cvPdfPath}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex min-h-[44px] items-center border border-ink px-4 py-2 text-body font-medium text-ink transition-colors hover:bg-ink hover:text-white"
-              >
-                View CV (PDF)
-              </a>
+                <a
+                  tabIndex={menuOpen ? 0 : -1}
+                  href={PORTFOLIO_DATA.brand.cvPdfPath}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex min-h-[44px] items-center border border-ink px-4 py-2 text-body font-medium text-ink transition-colors hover:bg-ink hover:text-white"
+                >
+                  View CV (PDF)
+                </a>
+              </div>
             </div>
           </div>
         </div>

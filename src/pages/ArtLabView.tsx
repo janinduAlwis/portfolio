@@ -143,8 +143,11 @@ export const ArtLabView: React.FC<ArtLabViewProps> = ({ onNavigate }) => {
                   src={piece.image}
                   alt={piece.title}
                   draggable={false}
+                  loading="eager"
                   referrerPolicy="no-referrer"
-                  className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+                  className={`h-full w-full transition-transform duration-500 group-hover:scale-105 ${
+                    piece.imageFit === 'contain' ? 'object-contain' : 'object-cover'
+                  }`}
                 />
               ) : (
                 <div className="flex h-full w-full flex-col justify-between p-6">
@@ -220,7 +223,9 @@ export const ArtLabView: React.FC<ArtLabViewProps> = ({ onNavigate }) => {
                 src={selectedPiece.image}
                 alt={selectedPiece.title}
                 referrerPolicy="no-referrer"
-                className="mt-6 max-h-[55vh] w-full object-cover"
+                className={`mt-6 max-h-[55vh] w-full ${
+                  selectedPiece.imageFit === 'contain' ? 'object-contain' : 'object-cover'
+                }`}
               />
             ) : (
               <div

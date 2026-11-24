@@ -7,6 +7,9 @@ import React, { useEffect, useRef, useState } from 'react';
  */
 export const CustomCursor: React.FC = () => {
   const dotRef = useRef<HTMLDivElement>(null);
+  const visibleRef = useRef(false);
+  const hoverRef = useRef(false);
+  const invertRef = useRef(false);
   const [enabled, setEnabled] = useState(false);
   const [hovering, setHovering] = useState(false);
   const [inverted, setInverted] = useState(false);
@@ -31,20 +34,36 @@ export const CustomCursor: React.FC = () => {
     const onMove = (e: MouseEvent) => {
       targetX = e.clientX;
       targetY = e.clientY;
-      if (!visible) setVisible(true);
+      if (!visibleRef.current) {
+        visibleRef.current = true;
+        currentX = targetX;
+        currentY = targetY;
+        setVisible(true);
+      }
 
       const el = document.elementFromPoint(e.clientX, e.clientY) as HTMLElement | null;
       if (el) {
         const isDark = Boolean(el.closest('[data-cursor-invert="true"]'));
-        setInverted(isDark);
+        if (isDark !== invertRef.current) {
+          invertRef.current = isDark;
+          setInverted(isDark);
+        }
         const isInteractive = Boolean(
           el.closest('a, button, input, select, textarea, [role="button"], [data-cursor-hover="true"]')
         );
-        setHovering(isInteractive);
+        if (isInteractive !== hoverRef.current) {
+          hoverRef.current = isInteractive;
+          setHovering(isInteractive);
+        }
       }
     };
 
-    const onLeave = () => setVisible(false);
+    const onLeave = () => {
+      if (visibleRef.current) {
+        visibleRef.current = false;
+        setVisible(false);
+      }
+    };
 
     const tick = () => {
       currentX += (targetX - currentX) * 0.28;
@@ -73,7 +92,7 @@ export const CustomCursor: React.FC = () => {
       document.documentElement.removeAttribute('data-cursor');
       cancelAnimationFrame(rafId);
     };
-  }, [visible]);
+  }, []);
 
   if (!enabled) return null;
 
@@ -81,7 +100,7 @@ export const CustomCursor: React.FC = () => {
     <div
       ref={dotRef}
       aria-hidden="true"
-      className="pointer-events-none fixed left-0 top-0 z-[95] -ml-2 -mt-2 hidden lg:block"
+      className="pointer-events-none fixed left-0 top-0 z-[95] -ml-[6px] -mt-[6px] hidden lg:block"
       style={{
         opacity: visible ? 1 : 0,
         transition: 'opacity 180ms ease',
@@ -89,7 +108,7 @@ export const CustomCursor: React.FC = () => {
     >
       <div
         id="custom-cursor-ring"
-        className="rounded-full transition-all duration-200 ease-out-soft"
+        className="rounded-full transition-[transform,width,height,margin,background-color,border-color] duration-200 ease-out-soft"
         style={{
           width: hovering ? '26px' : '12px',
           height: hovering ? '26px' : '12px',

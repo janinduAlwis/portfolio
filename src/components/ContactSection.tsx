@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { ArrowUpRight, Check } from 'lucide-react';
 import { PORTFOLIO_DATA } from '../data/portfolioData';
 import { HoverWaveText } from './HoverWaveText';
@@ -17,6 +17,18 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ onNavigate }) =>
   const [message, setMessage] = useState('');
   const [submitted, setSubmitted] = useState(false);
   const [error, setError] = useState('');
+  const videoRef = useRef<HTMLVideoElement>(null);
+
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!video) return;
+    video.muted = true;
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      video.pause();
+      return;
+    }
+    video.play().catch(() => {});
+  }, []);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -30,38 +42,40 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ onNavigate }) =>
 
   return (
     <div className="relative bg-canvas">
-      <section className="relative flex min-h-[100svh] w-full flex-col justify-center overflow-hidden py-10 sm:py-16 lg:py-[7svh]">
-        <img
-          src={PORTFOLIO_DATA.assets.contactSky}
-          alt=""
+      <section
+        id="start-project"
+        className="relative flex min-h-[100dvh] w-full flex-col justify-center overflow-hidden py-8 sm:py-12 lg:h-[100dvh] lg:min-h-0 lg:py-6"
+      >
+        <video
+          ref={videoRef}
+          src={PORTFOLIO_DATA.assets.contactSkyVideo}
+          autoPlay
+          loop
+          muted
+          playsInline
+          preload="auto"
+          poster={PORTFOLIO_DATA.assets.contactSky}
           aria-hidden="true"
-          referrerPolicy="no-referrer"
-          className="absolute inset-0 h-full w-full object-cover"
+          className="pointer-events-none absolute inset-0 h-full w-full object-cover"
         />
         <div
           aria-hidden="true"
-          className="absolute inset-0 bg-gradient-to-b from-black/25 via-transparent to-[#0D0D0B]/70"
+          className="absolute inset-0 bg-gradient-to-b from-black/10 via-transparent to-[#0D0D0B]/35"
         />
 
         <div className="relative mx-auto w-full max-w-canvas px-6 sm:px-10 lg:px-margin">
           <div
-            id="start-project"
             data-cursor-invert="true"
-            className="relative bg-night px-6 py-8 shadow-[0_18px_40px_-12px_rgba(10,10,10,0.45)] sm:px-10 sm:py-12 lg:mx-auto lg:w-3/5 lg:min-w-[calc(680*var(--px))] lg:px-[calc(52*var(--px))] lg:py-[calc(44*var(--px))]"
+            className="relative bg-night px-6 py-6 shadow-[0_18px_40px_-12px_rgba(10,10,10,0.45)] sm:px-9 sm:py-7 lg:mx-auto lg:w-[64%] lg:min-w-[calc(680*var(--px))] lg:px-[calc(46*var(--px))] lg:py-[calc(28*var(--px))]"
           >
             <Reveal>
               <p className="text-label text-night-muted">(LEAVE YOUR DETAILS)</p>
 
-              <h2
-                data-door-open="true"
-                className="mt-3 text-section font-medium uppercase text-white lg:mt-[calc(14*var(--px))]"
-              >
-                OPEN THE DO
-                <span aria-hidden="true" className="door-add door-add-upper" />
-                R
+              <h2 className="mt-2 font-medium uppercase leading-[0.98] tracking-[-0.02em] text-white text-[clamp(1.85rem,4.4vw,4.1rem)] lg:mt-[calc(10*var(--px))]">
+                LET&apos;S WORK TOGETHER.
               </h2>
 
-              <p className="mt-3 text-body text-night-body">
+              <p className="mt-2 text-body text-night-body">
                 Or write directly:{' '}
                 <a
                   href={`mailto:${PORTFOLIO_DATA.brand.email}`}
@@ -109,8 +123,8 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ onNavigate }) =>
                 </button>
               </div>
             ) : (
-              <form onSubmit={handleSubmit} noValidate className="mt-8 sm:mt-10">
-                <Reveal className="grid grid-cols-1 gap-y-5 sm:grid-cols-2 sm:gap-x-8 sm:gap-y-7">
+              <form onSubmit={handleSubmit} noValidate className="mt-5 sm:mt-6">
+                <Reveal className="grid grid-cols-1 gap-y-4 sm:grid-cols-2 sm:gap-x-8 sm:gap-y-5">
                   <div>
                     <label htmlFor="lead-name" className="block text-label text-night-muted">
                       NAME
@@ -123,7 +137,7 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ onNavigate }) =>
                       placeholder="Your name"
                       value={name}
                       onChange={(e) => setName(e.target.value)}
-                      className="mt-1.5 min-h-[44px] w-full border-b border-white/25 bg-transparent pb-2 text-body-lg text-white outline-none transition-colors duration-300 placeholder:text-white/45 focus:border-white/75 sm:pb-3"
+                      className="mt-1 min-h-[38px] w-full border-b border-white/25 bg-transparent pb-1.5 text-body-lg text-white outline-none transition-colors duration-300 placeholder:text-white/45 focus:border-white/75 sm:pb-2"
                     />
                   </div>
 
@@ -140,12 +154,12 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ onNavigate }) =>
                       placeholder="you@company.com"
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
-                      className="mt-1.5 min-h-[44px] w-full border-b border-white/25 bg-transparent pb-2 text-body-lg text-white outline-none transition-colors duration-300 placeholder:text-white/45 focus:border-white/75 sm:pb-3"
+                      className="mt-1 min-h-[38px] w-full border-b border-white/25 bg-transparent pb-1.5 text-body-lg text-white outline-none transition-colors duration-300 placeholder:text-white/45 focus:border-white/75 sm:pb-2"
                     />
                   </div>
                 </Reveal>
 
-                <Reveal delay={60} className="grid grid-cols-[2fr_3fr] gap-x-4 gap-y-5 pt-5 sm:gap-y-7 sm:pt-7 lg:grid-cols-2 lg:gap-x-8 lg:pt-[calc(30*var(--px))]">
+                <Reveal delay={60} className="grid grid-cols-[2fr_3fr] gap-x-4 gap-y-4 pt-3.5 sm:gap-y-5 sm:pt-4 lg:grid-cols-2 lg:gap-x-8 lg:pt-[calc(18*var(--px))]">
                   <div>
                     <label htmlFor="lead-phone" className="block text-label text-night-muted">
                       PHONE
@@ -159,7 +173,7 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ onNavigate }) =>
                       placeholder="+94"
                       value={phone}
                       onChange={(e) => setPhone(e.target.value)}
-                      className="mt-1.5 min-h-[44px] w-full border-b border-white/25 bg-transparent pb-2 text-body-lg text-white outline-none transition-colors duration-300 placeholder:text-white/45 focus:border-white/75 sm:pb-3"
+                      className="mt-1 min-h-[38px] w-full border-b border-white/25 bg-transparent pb-1.5 text-body-lg text-white outline-none transition-colors duration-300 placeholder:text-white/45 focus:border-white/75 sm:pb-2"
                     />
                   </div>
 
@@ -172,7 +186,7 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ onNavigate }) =>
                       name="reason"
                       value={reason}
                       onChange={(e) => setReason(e.target.value)}
-                      className="mt-1.5 min-h-[44px] w-full cursor-pointer border-b border-white/25 bg-transparent pb-2 text-body-lg text-white outline-none transition-colors duration-300 focus:border-white/75 sm:pb-3 [&>option]:text-ink"
+                      className="mt-1 min-h-[38px] w-full cursor-pointer border-b border-white/25 bg-transparent pb-1.5 text-body-lg text-white outline-none transition-colors duration-300 focus:border-white/75 sm:pb-2 [&>option]:text-ink"
                     >
                       <option value="Software Engineering Internship">
                         Software Engineering Internship
@@ -185,7 +199,7 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ onNavigate }) =>
                   </div>
                 </Reveal>
 
-                <Reveal delay={120} className="pt-5 sm:pt-7 lg:pt-[calc(30*var(--px))]">
+                <Reveal delay={120} className="pt-3.5 sm:pt-4 lg:pt-[calc(18*var(--px))]">
                   <label htmlFor="lead-message" className="block text-label text-night-muted">
                     MESSAGE
                   </label>
@@ -196,17 +210,17 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ onNavigate }) =>
                     placeholder="Role details or project overview"
                     value={message}
                     onChange={(e) => setMessage(e.target.value)}
-                    className="mt-1.5 min-h-[44px] w-full border-b border-white/25 bg-transparent pb-2 text-body-lg text-white outline-none transition-colors duration-300 placeholder:text-white/45 focus:border-white/75 sm:pb-3"
+                    className="mt-1 min-h-[38px] w-full border-b border-white/25 bg-transparent pb-1.5 text-body-lg text-white outline-none transition-colors duration-300 placeholder:text-white/45 focus:border-white/75 sm:pb-2"
                   />
                 </Reveal>
 
                 {error && (
-                  <p role="alert" className="mt-4 text-label text-accent">
+                  <p role="alert" className="mt-3 text-label text-accent">
                     {error}
                   </p>
                 )}
 
-                <Reveal delay={160} className="flex flex-wrap items-center gap-4 pb-3 pt-7 sm:gap-8 sm:pt-9">
+                <Reveal delay={160} className="flex flex-wrap items-center gap-4 pb-1 pt-5 sm:gap-8 sm:pt-6">
                   <button
                     type="submit"
                     data-hw="true"

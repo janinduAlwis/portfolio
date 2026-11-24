@@ -1,12 +1,3 @@
-import janinduPortraitImg from '../assets/images/janindu_portrait.jpg';
-import projectRiseImg from '../assets/images/project_rise_1794593354723.jpg';
-import projectFigcomsImg from '../assets/images/project_figcoms_1794593355295.jpg';
-import projectImotionImg from '../assets/images/project_imotion_1794593355576.jpg';
-import projectIsraelPoliceImg from '../assets/images/project_israel_police_1794593356121.jpg';
-import artLabOneImg from '../assets/images/art_lab_one_1794593356272.jpg';
-import artLabTwoImg from '../assets/images/art_lab_two_1794593357381.jpg';
-import contactSkyImg from '../assets/images/contact_sky_backdrop_1794593357908.jpg';
-
 export interface ProjectCaseStudy {
   slug: string;
   index: string;
@@ -58,6 +49,7 @@ export interface LabNodePiece {
   accentColor: string;
   bgColor: string;
   image?: string;
+  imageFit?: 'cover' | 'contain';
   caption: string;
 }
 
@@ -70,6 +62,7 @@ export interface CertificationItem {
   focus: string;
   dateOrder: number;
   image: string;
+  imageFit?: 'cover' | 'contain';
 }
 
 export const PORTFOLIO_DATA = {
@@ -96,10 +89,12 @@ export const PORTFOLIO_DATA = {
   },
   assets: {
     coverPortrait: '/assets/hero.png',
-    portrait: janinduPortraitImg,
-    labVisualOne: artLabOneImg,
-    labVisualTwo: artLabTwoImg,
-    contactSky: contactSkyImg,
+    portrait: '/assets/aistudio/fsg_e9c92de9.jpg',
+    stackVisual: '/assets/aistudio/image_2da65280.png',
+    labVisualOne: '/assets/aistudio/image_f11c72f4.png',
+    labVisualTwo: '/assets/aistudio/image_db37e834.png',
+    contactSky: '/assets/sky-poster.jpg',
+    contactSkyVideo: '/assets/aistudio/sky_d5dfe244.mp4',
   },
   disciplines: [
     'React & Next.js',
@@ -109,7 +104,7 @@ export const PORTFOLIO_DATA = {
     'IoT & Embedded',
   ],
   bioStatement:
-    "Hi, I'm Janindu — a BICT (Hons) undergraduate specializing in Software Technology at the University of Sri Jayewardenepura, seeking a software engineering internship. I build responsive web and mobile applications using React, React Native, Next.js, and TypeScript — backed by databases, AI integration, and real-world IoT systems.",
+    "Hi, I'm Janindu, a BICT (Hons) undergraduate specializing in Software Technology at the University of Sri Jayewardenepura, seeking a software engineering internship. I build responsive web and mobile applications using React, React Native, Next.js, and TypeScript, backed by databases, AI integration, and real-world IoT systems.",
   stackRowOne: [
     'React.js',
     'React Native',
@@ -150,10 +145,10 @@ export const PORTFOLIO_DATA = {
       team: 'Individual Project',
       repoUrl: 'https://github.com/janinduAlwis/BoardLK',
       disciplines: ['React Native', 'Expo', 'TypeScript', 'Zustand', 'React Native Maps'],
-      coverImage: projectFigcomsImg,
+      coverImage: '/assets/aistudio/BoardLK_UX_Case_Study_f286eea3.png',
       coverAlt: 'BoardLK — Mobile boarding and accommodation discovery platform in Sri Lanka',
       overview:
-        'BoardLK is a cross-platform mobile application built with React Native and Expo to help students and professionals discover boarding places across Sri Lanka — combining interactive map exploration, instant property filtering, and direct in-app messaging.',
+        'BoardLK is a cross-platform mobile application built with React Native and Expo to help students and professionals discover boarding places across Sri Lanka, combining interactive map exploration, instant property filtering, and direct in-app messaging.',
       myRole: [
         'Architected and built the mobile application end-to-end as an individual developer using React Native, Expo, and TypeScript.',
         'Implemented interactive geospatial property discovery with React Native Maps and multi-criteria search filters.',
@@ -212,10 +207,10 @@ export const PORTFOLIO_DATA = {
       team: 'University Group Project',
       repoUrl: 'https://github.com/hesandasamadith/agent-medlink',
       disciplines: ['Next.js', 'Tailwind CSS', 'OpenAI', 'n8n', 'Firebase', 'Docker', 'Telegram'],
-      coverImage: projectRiseImg,
+      coverImage: '/assets/aistudio/medlink.png',
       coverAlt: 'Agent MedLink — AI-powered healthcare appointment and hospital information platform',
       overview:
-        'Agent MedLink is an AI-powered healthcare appointment platform built with Next.js, Tailwind CSS, OpenAI, n8n, and Firebase Firestore — enabling patients to query hospital information, check doctor schedules, and book appointments directly through messaging apps like Telegram.',
+        'Agent MedLink is an AI-powered healthcare appointment platform built with Next.js, Tailwind CSS, OpenAI, n8n, and Firebase Firestore, enabling patients to query hospital information, check doctor schedules, and book appointments directly through messaging apps like Telegram.',
       myRole: [
         'Developed full-stack Next.js and Tailwind CSS interfaces for managing hospital directories, doctor schedules, and live appointment queues.',
         'Integrated OpenAI natural-language orchestration with n8n automation workflows to handle conversational booking requests.',
@@ -273,10 +268,10 @@ export const PORTFOLIO_DATA = {
       team: 'Individual Project',
       repoUrl: 'https://github.com/janinduAlwis/Live-Crowds',
       disciplines: ['React', 'Vite', 'JavaScript', 'Responsive UI'],
-      coverImage: artLabOneImg,
+      coverImage: '/assets/aistudio/livecrowds.png',
       coverAlt: 'Live Crowds — Smart tourist crowd tracking web application',
       overview:
-        'Live Crowds is a responsive web application built with React and Vite to track real-time tourist crowd density across destinations in Sri Lanka — featuring group check-in workflows, automatic checkout timers, and persistent local storage.',
+        'Live Crowds is a responsive web application built with React and Vite to track real-time tourist crowd density across destinations in Sri Lanka, featuring group check-in workflows, automatic checkout timers, and persistent local storage.',
       myRole: [
         'Designed and developed the entire responsive frontend application using React, Vite, and modern JavaScript.',
         'Implemented group check-in flows allowing tour guides and visitors to log headcounts quickly on mobile and desktop.',
@@ -334,10 +329,10 @@ export const PORTFOLIO_DATA = {
       team: 'University Group Project',
       repoUrl: 'https://github.com/itspsb2/Smart-Construction-Helmet',
       disciplines: ['NodeMCU (ESP8266)', 'MPU6050', 'DHT11', 'MQTT', 'MERN Stack'],
-      coverImage: projectImotionImg,
+      coverImage: '/assets/aistudio/helmet.png',
       coverAlt: 'Smart Construction Helmet — IoT-based construction worker safety telemetry system',
       overview:
-        'An IoT-based worker safety system engineered around NodeMCU (ESP8266) — implementing automated fall detection, GPS location tracking, ambient temperature/humidity monitoring, and proximity obstacle alerts streamed over MQTT to a MERN Stack dashboard.',
+        'An IoT-based worker safety system engineered around NodeMCU (ESP8266), implementing automated fall detection, GPS location tracking, ambient temperature/humidity monitoring, and proximity obstacle alerts streamed over MQTT to a MERN Stack dashboard.',
       myRole: [
         'Programmed NodeMCU (ESP8266) firmware integrating MPU6050 accelerometer, DHT11 thermal/humidity sensor, Ultrasonic proximity sensor, and LDR light sensor.',
         'Implemented real-time fall detection thresholds, GPS telemetry capture, and MQTT message publishing.',
@@ -390,7 +385,7 @@ export const PORTFOLIO_DATA = {
     paragraphOne:
       "Pursuing a BICT (Hons) in Software Technology at the University of Sri Jayewardenepura (2024–Present), backed by hands-on industry exposure as a Student Trainee at People's Bank in Walasmulla (10/2023 – 03/2024).",
     paragraphTwo:
-      'Alongside academic and real-world engineering builds, I hold six 2026 certifications across Google, Cisco, Google Play Academy, and IBM SkillsBuild — spanning AI Agents, Analytics, Performance Ads, Digital Marketing, App Store Readiness, and Computer Hardware.',
+      'Alongside academic and real-world engineering builds, I hold six 2026 certifications across Google, Cisco, Google Play Academy, and IBM SkillsBuild — spanning AI Agents, Analytics, Data Foundations, Performance Ads, App Store Readiness, and Computer Hardware.',
   },
   skillset: [
     {
@@ -474,11 +469,11 @@ export const PORTFOLIO_DATA = {
       year: '2026',
       x: 110,
       y: 80,
-      width: 340,
-      height: 250,
+      width: 360,
+      height: 240,
       accentColor: '#D12424',
       bgColor: '#EFEEEB',
-      image: projectFigcomsImg,
+      image: '/assets/aistudio/BoardLK_UX_Case_Study_f286eea3.png',
       caption: 'Expo Router + Zustand + React Native Maps accommodation discovery app.',
     },
     {
@@ -486,13 +481,13 @@ export const PORTFOLIO_DATA = {
       title: 'Agent MedLink · OpenAI + n8n',
       category: 'AI & Agents',
       year: '2026',
-      x: 510,
-      y: 120,
-      width: 330,
-      height: 250,
+      x: 520,
+      y: 110,
+      width: 345,
+      height: 230,
       accentColor: '#1ECAD3',
-      bgColor: '#0D0D0B',
-      image: projectRiseImg,
+      bgColor: '#EFEEEB',
+      image: '/assets/aistudio/medlink.png',
       caption: 'Next.js + Firestore + Telegram conversational appointment automation.',
     },
     {
@@ -500,10 +495,10 @@ export const PORTFOLIO_DATA = {
       title: 'TypeScript · Zustand · Expo',
       category: 'Language',
       year: '2026',
-      x: 900,
+      x: 910,
       y: 70,
       width: 260,
-      height: 270,
+      height: 260,
       accentColor: '#D12424',
       bgColor: '#0D0D0B',
       caption: 'Strictly typed cross-platform architecture for mobile and web.',
@@ -513,13 +508,13 @@ export const PORTFOLIO_DATA = {
       title: 'Live Crowds · React + Vite',
       category: 'Frontend',
       year: '2026',
-      x: 210,
+      x: 180,
       y: 390,
-      width: 320,
-      height: 240,
+      width: 330,
+      height: 220,
       accentColor: '#D12424',
-      bgColor: '#EFEEEB',
-      image: artLabOneImg,
+      bgColor: '#0D0D0B',
+      image: '/assets/aistudio/livecrowds.png',
       caption: 'Tourist crowd tracking with group check-in and automatic checkout.',
     },
     {
@@ -527,13 +522,13 @@ export const PORTFOLIO_DATA = {
       title: 'Smart Helmet · ESP8266 + MQTT',
       category: 'IoT & Hardware',
       year: '2026',
-      x: 600,
-      y: 420,
-      width: 320,
-      height: 240,
+      x: 575,
+      y: 410,
+      width: 330,
+      height: 220,
       accentColor: '#2B7FFF',
-      bgColor: '#EAE7E0',
-      image: projectImotionImg,
+      bgColor: '#0D0D0B',
+      image: '/assets/aistudio/helmet.png',
       caption: 'NodeMCU, MPU6050, DHT11, Ultrasonic & LDR streamed to MERN Stack.',
     },
     {
@@ -556,11 +551,11 @@ export const PORTFOLIO_DATA = {
       year: '2025–2026',
       x: 110,
       y: 680,
-      width: 310,
+      width: 315,
       height: 210,
       accentColor: '#EAB308',
-      bgColor: '#1C1D1A',
-      image: projectIsraelPoliceImg,
+      bgColor: '#0D0D0B',
+      image: '/assets/aistudio/Neon_Circuitry__Futuristic_Development_Hub_9a81f698.png',
       caption: 'Core systems programming, OOP, and embedded microcontroller firmware.',
     },
     {
@@ -568,14 +563,15 @@ export const PORTFOLIO_DATA = {
       title: 'IBM AI Agents & Google Certs',
       category: 'AI & Agents',
       year: '2026',
-      x: 480,
-      y: 700,
-      width: 330,
-      height: 220,
+      x: 495,
+      y: 675,
+      width: 240,
+      height: 240,
       accentColor: '#D12424',
-      bgColor: '#E8E3DA',
-      image: artLabTwoImg,
-      caption: 'Six verified 2026 credentials across AI Agents, Analytics, Ads & Hardware.',
+      bgColor: '#B5ECC7',
+      image: '/assets/aistudio/unleash_7a61449e.jpg',
+      imageFit: 'contain',
+      caption: 'Six verified 2026 credentials across AI Agents, Analytics, Data, Ads & Hardware.',
     },
   ] as LabNodePiece[],
   certifications: [
@@ -587,7 +583,8 @@ export const PORTFOLIO_DATA = {
       year: '2026',
       focus: 'Autonomous Workflows & Agent Design',
       dateOrder: 6,
-      image: projectRiseImg,
+      image: '/assets/aistudio/unleash_7a61449e.jpg',
+      imageFit: 'contain',
     },
     {
       id: 'google-play-store-listing',
@@ -597,7 +594,8 @@ export const PORTFOLIO_DATA = {
       year: '2026',
       focus: 'Mobile App Publishing & ASO Readiness',
       dateOrder: 5,
-      image: projectFigcomsImg,
+      image: '/assets/aistudio/1772535784146_696dd976.jpg',
+      imageFit: 'contain',
     },
     {
       id: 'cisco-hardware',
@@ -607,7 +605,8 @@ export const PORTFOLIO_DATA = {
       year: '2026',
       focus: 'Hardware Architecture & Embedded Foundations',
       dateOrder: 4,
-      image: projectImotionImg,
+      image: '/assets/aistudio/1772554289027_f989df83.jpg',
+      imageFit: 'contain',
     },
     {
       id: 'google-analytics',
@@ -617,7 +616,8 @@ export const PORTFOLIO_DATA = {
       year: '2026',
       focus: 'Product Telemetry & Conversion Insights',
       dateOrder: 3,
-      image: artLabOneImg,
+      image: '/assets/aistudio/1772607503067_ea3bcc77.jpg',
+      imageFit: 'contain',
     },
     {
       id: 'google-ai-ads',
@@ -627,17 +627,19 @@ export const PORTFOLIO_DATA = {
       year: '2026',
       focus: 'AI Optimization & Growth Systems',
       dateOrder: 2,
-      image: artLabTwoImg,
+      image: '/assets/aistudio/1772609271802_626f8e2f.jpg',
+      imageFit: 'contain',
     },
     {
-      id: 'google-digital-marketing',
-      title: 'Fundamentals of Digital Marketing',
-      issuer: 'Google',
+      id: 'google-data-foundations',
+      title: 'Foundations: Data, Data, Everywhere',
+      issuer: 'Google · Coursera',
       category: 'Google',
       year: '2026',
-      focus: 'Digital Ecosystems & Product Distribution',
+      focus: 'Data Analytics Foundations & Decision Systems',
       dateOrder: 1,
-      image: projectIsraelPoliceImg,
+      image: '/assets/aistudio/1770986213556_cfd4c06a.jpg',
+      imageFit: 'contain',
     },
   ] as CertificationItem[],
   socials: [
