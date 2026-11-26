@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { PORTFOLIO_DATA } from '../data/portfolioData';
+import { OptimizedImage } from './OptimizedImage';
 
 const SKILL_PREVIEWS = [
   '/assets/aistudio/1.png',
@@ -22,6 +23,8 @@ export const SkillsetSection: React.FC = () => {
   const outerRef = useRef<HTMLDivElement>(null);
   const rowRefs = useRef<(HTMLDivElement | null)[]>([]);
   const lastSpotlightRef = useRef<ScrollSpotlight>(null);
+  const hoveredIdxRef = useRef<number | null>(null);
+  hoveredIdxRef.current = hoveredIdx;
 
   useEffect(() => {
     setCanHover(window.matchMedia('(hover: hover) and (pointer: fine)').matches);
@@ -105,7 +108,9 @@ export const SkillsetSection: React.FC = () => {
     };
 
     const onScroll = () => {
-      setHoveredIdx((prev) => (prev !== null ? null : prev));
+      if (hoveredIdxRef.current !== null) {
+        setHoveredIdx(null);
+      }
       if (!scheduled) {
         scheduled = true;
         rafId = requestAnimationFrame(update);
@@ -196,9 +201,12 @@ export const SkillsetSection: React.FC = () => {
                                 : `rotate(${THUMB_TILTS[idx % THUMB_TILTS.length]}) scale(0.72)`,
                             }}
                           >
-                            <img
+                            <OptimizedImage
                               src={previewSrc}
                               alt=""
+                              sizes="(max-width: 639px) 96px, 160px"
+                              loading="lazy"
+                              decoding="async"
                               referrerPolicy="no-referrer"
                               className="h-full w-full object-cover"
                             />

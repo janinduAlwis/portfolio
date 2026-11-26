@@ -3,6 +3,7 @@ import { ArrowUpRight } from 'lucide-react';
 import { PORTFOLIO_DATA } from '../data/portfolioData';
 import { HoverWaveText } from './HoverWaveText';
 import { RoutePath } from './Navbar';
+import { OptimizedImage } from './OptimizedImage';
 import { Reveal } from './Reveal';
 
 interface ProjectsSectionProps {
@@ -13,6 +14,7 @@ export const ProjectsSection: React.FC<ProjectsSectionProps> = ({ onNavigate }) 
   const [hoveredSlug, setHoveredSlug] = useState<string | null>(null);
   const [scrollSlug, setScrollSlug] = useState<string>(PORTFOLIO_DATA.projects[0].slug);
   const rowRefs = useRef<(HTMLLIElement | null)[]>([]);
+  const lastScrollSlugRef = useRef<string>(PORTFOLIO_DATA.projects[0].slug);
 
   // Scroll-active tracking: whichever project row sits closest to the upper-mid viewport highlights automatically
   useEffect(() => {
@@ -38,7 +40,10 @@ export const ProjectsSection: React.FC<ProjectsSectionProps> = ({ onNavigate }) 
         }
       });
 
-      setScrollSlug(bestSlug);
+      if (bestSlug !== lastScrollSlugRef.current) {
+        lastScrollSlugRef.current = bestSlug;
+        setScrollSlug(bestSlug);
+      }
     };
 
     const onScroll = () => {
@@ -159,9 +164,12 @@ export const ProjectsSection: React.FC<ProjectsSectionProps> = ({ onNavigate }) 
                       }`}
                     >
                       <div className="group/cover relative mt-6 aspect-[16/10] w-full overflow-hidden bg-night lg:mt-0 lg:w-[calc(276*var(--px))]">
-                        <img
+                        <OptimizedImage
                           src={project.coverImage}
                           alt={project.coverAlt}
+                          sizes="(max-width: 1023px) 92vw, 320px"
+                          loading="lazy"
+                          decoding="async"
                           referrerPolicy="no-referrer"
                           className="h-full w-full object-cover transition-transform duration-700 ease-out-soft group-hover/cover:scale-[1.03]"
                         />

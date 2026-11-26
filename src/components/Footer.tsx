@@ -29,6 +29,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
 
     let rafId = 0;
     let ticking = false;
+    let lastClip = '';
 
     const updateClip = () => {
       ticking = false;
@@ -38,7 +39,11 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
       const n = 1 - (1 - Math.pow(1 - raw, 3));
       const topInset = (5 * n).toFixed(2);
       const sideInset = (7 * n).toFixed(2);
-      el.style.clipPath = `inset(${topInset}% ${sideInset}% 0% ${sideInset}%)`;
+      const nextClip = `inset(${topInset}% ${sideInset}% 0% ${sideInset}%)`;
+      if (nextClip !== lastClip) {
+        lastClip = nextClip;
+        el.style.clipPath = nextClip;
+      }
     };
 
     const onScroll = () => {

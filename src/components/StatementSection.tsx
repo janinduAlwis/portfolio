@@ -1,5 +1,6 @@
 import React, { useEffect, useMemo, useRef } from 'react';
 import { PORTFOLIO_DATA } from '../data/portfolioData';
+import { OptimizedImage } from './OptimizedImage';
 import { Reveal } from './Reveal';
 
 export const StatementSection: React.FC = () => {
@@ -97,17 +98,15 @@ export const StatementSection: React.FC = () => {
                     className="mb-6 block w-[42%] sm:float-right sm:mb-2 sm:ml-8 sm:mt-2 sm:w-[26%] sm:max-w-[calc(206*var(--px))] lg:ml-10 lg:w-[19%]"
                   >
                     <span className="pointer-events-none relative block aspect-square -rotate-[6deg] overflow-hidden bg-transparent shadow-[0_18px_40px_-12px_rgba(10,10,10,0.22)]">
-                      <img
-                        src={PORTFOLIO_DATA.assets.portrait}
-                        alt="Janindu Dilshan De Alwis"
+                      <OptimizedImage
+                        src={PORTFOLIO_DATA.assets.statementVisual}
+                        alt="Software engineering & full-stack systems visual"
+                        sizes="(max-width: 639px) 42vw, (max-width: 1023px) 26vw, 220px"
+                        loading="lazy"
+                        decoding="async"
                         referrerPolicy="no-referrer"
-                        className="block h-full w-full scale-[1.01] object-cover object-top"
+                        className="block h-full w-full scale-[1.01] object-cover object-center"
                       />
-                      <span className="absolute inset-x-0 bottom-0 flex items-center bg-gradient-to-t from-black/65 via-black/25 to-transparent px-3 pb-2.5 pt-6">
-                        <span className="font-space text-[10px] uppercase tracking-[0.12em] text-white/90">
-                          Colombo · USJ
-                        </span>
-                      </span>
                     </span>
                   </span>
 
@@ -129,10 +128,13 @@ export const StatementSection: React.FC = () => {
 
                 <div className="pt-8 lg:flex lg:gap-x-[calc(45*var(--px))] lg:pt-[calc(20*var(--px))]">
                   <Reveal className="hidden lg:block lg:w-[calc(305*var(--px))] lg:shrink-0">
-                    <div className="group relative aspect-video w-full overflow-hidden rounded-[2px] bg-night">
-                      <img
+                    <div className="group relative aspect-[3/2] w-full overflow-hidden rounded-[2px] bg-canvas">
+                      <OptimizedImage
                         src={PORTFOLIO_DATA.assets.stackVisual}
                         alt="Web, Mobile, AI & IoT Stack and Technologies"
+                        sizes="(min-width: 1024px) 320px, 1px"
+                        loading="lazy"
+                        decoding="async"
                         referrerPolicy="no-referrer"
                         className="h-full w-full object-cover transition-transform duration-700 ease-out-soft group-hover:scale-105"
                       />
@@ -140,7 +142,7 @@ export const StatementSection: React.FC = () => {
                   </Reveal>
 
                   <div className="min-w-0 lg:flex-1 lg:pt-[calc(24*var(--px))]">
-                    <p className="text-label text-muted">(STACK &amp; TECHNOLOGIES)</p>
+                    <p className="text-label text-muted">STACK &amp; TECHNOLOGIES</p>
 
                     <div className="relative mt-6 flex flex-col gap-5 lg:mt-[calc(18*var(--px))] lg:gap-[calc(22*var(--px))]">
                       <div

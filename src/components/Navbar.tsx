@@ -58,7 +58,9 @@ export const Navbar: React.FC<NavbarProps> = ({
     <>
       <div
         className={`${
-          overlay ? 'relative z-40 w-full lg:flex lg:h-[8.2%] lg:items-center' : 'relative z-40 w-full bg-canvas'
+          overlay
+            ? 'pointer-events-none relative z-40 w-full lg:flex lg:h-[8.2%] lg:items-center'
+            : 'relative z-40 w-full bg-canvas'
         }`}
       >
         <div className="relative mx-auto w-full max-w-canvas px-6 sm:px-10 lg:px-margin">
@@ -73,7 +75,7 @@ export const Navbar: React.FC<NavbarProps> = ({
             <button
               type="button"
               onClick={() => handleLink({ page: 'home', anchor: 'top' })}
-              className="-my-2 -ml-2 inline-flex min-h-[calc(44*var(--px))] items-center px-2 text-body-lg"
+              className="pointer-events-auto -my-2 -ml-2 inline-flex min-h-[calc(44*var(--px))] items-center px-2 text-body-lg"
               aria-label="Janindu Alwis Home"
             >
               <Wordmark variant="ink" className="h-[1.05em] w-auto" />
@@ -85,7 +87,7 @@ export const Navbar: React.FC<NavbarProps> = ({
               aria-expanded={menuOpen}
               aria-controls="site-menu"
               aria-label={menuOpen ? 'Close menu' : 'Open menu'}
-              className="relative z-50 -my-4 -mr-2 flex min-h-[44px] w-[calc(56*var(--px))] flex-col items-end justify-center gap-[8px] px-2 py-4"
+              className="pointer-events-auto relative z-50 -my-4 -mr-2 flex min-h-[44px] w-[calc(56*var(--px))] flex-col items-end justify-center gap-[8px] px-2 py-4"
             >
               <span
                 className={`block h-[2px] w-[calc(40*var(--px))] bg-ink transition-transform duration-300 ease-out-soft ${

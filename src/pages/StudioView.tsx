@@ -3,6 +3,7 @@ import { ArrowLeft, ArrowUpRight, Plus, Minus, FileText } from 'lucide-react';
 import { PORTFOLIO_DATA } from '../data/portfolioData';
 import { HoverWaveText } from '../components/HoverWaveText';
 import { RoutePath } from '../components/Navbar';
+import { OptimizedImage } from '../components/OptimizedImage';
 
 interface StudioViewProps {
   onNavigate: (route: RoutePath) => void;
@@ -58,9 +59,12 @@ export const StudioView: React.FC<StudioViewProps> = ({ onNavigate }) => {
         <div className="mt-14 grid grid-cols-1 gap-12 lg:grid-cols-12">
           <div className="lg:col-span-5">
             <div className="flex flex-col items-center justify-center bg-night p-10 text-center text-white">
-              <img
+              <OptimizedImage
                 src={PORTFOLIO_DATA.assets.portrait}
                 alt={PORTFOLIO_DATA.brand.fullName}
+                sizes="192px"
+                loading="eager"
+                decoding="async"
                 referrerPolicy="no-referrer"
                 className="h-48 w-48 rounded-full border-2 border-white/25 object-cover"
               />

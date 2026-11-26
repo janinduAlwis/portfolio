@@ -193,8 +193,8 @@
 }
 
 @keyframes loader-chip {
-  0% { opacity: 0; transform: translate(-50%) scale(0.82); }
-  100% { opacity: 1; transform: translate(-50%) scale(1); }
+  0% { opacity: 0; transform: scale(0.82); }
+  100% { opacity: 1; transform: scale(1); }
 }
 
 @keyframes char-wave {

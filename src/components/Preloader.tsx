@@ -1,17 +1,20 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { PORTFOLIO_DATA } from '../data/portfolioData';
+import { OptimizedImage } from './OptimizedImage';
 
 interface PreloaderProps {
   onComplete: () => void;
 }
 
 const CHIP_IMAGES = [
-  PORTFOLIO_DATA.projects[0].coverImage,
-  PORTFOLIO_DATA.projects[1].coverImage,
-  PORTFOLIO_DATA.projects[2].coverImage,
-  PORTFOLIO_DATA.projects[3].coverImage,
-  PORTFOLIO_DATA.assets.labVisualOne,
-  PORTFOLIO_DATA.assets.labVisualTwo,
+  '/assets/aistudio/ChatGPT_Image_Nov_26__2026__10_34_54_AM-1_be18f3c9.png',
+  '/assets/aistudio/ChatGPT_Image_Nov_26__2026__10_35_01_AM-2_4f81eec5.png',
+  '/assets/aistudio/ChatGPT_Image_Nov_26__2026__10_35_05_AM-4_34ac1c20.png',
+  '/assets/aistudio/ChatGPT_Image_Nov_26__2026__10_35_08_AM-5_838f22ff.png',
+  '/assets/aistudio/ChatGPT_Image_Nov_26__2026__10_35_11_AM-6_453fb98d.png',
+  '/assets/aistudio/ChatGPT_Image_Nov_26__2026__10_35_14_AM-7_28e2bf50.png',
+  '/assets/aistudio/ChatGPT_Image_Nov_26__2026__10_35_16_AM-8_8cfe7366.png',
+  '/assets/aistudio/ChatGPT_Image_Nov_26__2026__10_35_21_AM-9_caeab0c1.png',
+  '/assets/aistudio/ChatGPT_Image_Nov_26__2026__10_35_22_AM-10_805e193f.png',
 ];
 
 interface LoaderLetterProps {
@@ -113,16 +116,16 @@ export const Preloader: React.FC<PreloaderProps> = ({ onComplete }) => {
         transitionDelay: leaving ? '240ms' : '0ms',
       }}
     >
-      <div className="flex flex-wrap items-center justify-center gap-x-[0.22em] text-display font-medium uppercase tracking-[-0.03em] text-ink">
+      <div className="flex flex-nowrap items-center justify-center gap-x-[0.22em] whitespace-nowrap text-[clamp(1.5rem,6.944vw,6.25rem)] font-medium uppercase leading-[0.88] tracking-[-0.03em] text-ink">
         <span className="flex items-center">
           {leftLetters.map((ch, i) => (
             <LoaderLetter key={`l-${i}`} char={ch} index={i} leaving={leaving} />
           ))}
         </span>
 
-        {/* Animated Cycling Preview Chip */}
+        {/* Animated Cycling Red Symbol — fixed in the space between JANINDU and ALWIS */}
         <span
-          className="relative mx-[0.06em] inline-block h-[1.08em] w-[1.45em] overflow-hidden bg-night align-middle"
+          className="relative mx-[0.06em] inline-block h-[1.08em] w-[1.08em] shrink-0 overflow-hidden bg-transparent align-middle"
           style={{
             animation: leaving
               ? 'loader-letter-out 360ms cubic-bezier(0.65, 0, 0.2, 1) 120ms both'
@@ -130,12 +133,15 @@ export const Preloader: React.FC<PreloaderProps> = ({ onComplete }) => {
           }}
         >
           {CHIP_IMAGES.map((src, idx) => (
-            <img
+            <OptimizedImage
               key={`${src}-${idx}`}
               src={src}
               alt=""
+              sizes="120px"
+              loading="eager"
+              decoding={idx === 0 ? 'sync' : 'async'}
               referrerPolicy="no-referrer"
-              className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-150 ${
+              className={`absolute inset-0 h-full w-full object-contain transition-opacity duration-100 ${
                 idx === chipIndex ? 'opacity-100' : 'opacity-0'
               }`}
             />

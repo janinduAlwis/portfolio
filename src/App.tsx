@@ -1,8 +1,7 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { Suspense, lazy, useEffect, useRef, useState } from 'react';
 import Lenis from 'lenis';
 import { Preloader } from './components/Preloader';
 import { CustomCursor } from './components/CustomCursor';
-import { AwwwardsBadge } from './components/AwwwardsBadge';
 import { Navbar, RoutePath } from './components/Navbar';
 import { HeroSection } from './components/HeroSection';
 import { StatementSection } from './components/StatementSection';
@@ -11,11 +10,22 @@ import { ArtLabSection } from './components/ArtLabSection';
 import { SkillsetSection } from './components/SkillsetSection';
 import { ContactSection } from './components/ContactSection';
 import { Footer } from './components/Footer';
-import { CaseStudyView } from './pages/CaseStudyView';
-import { StudioView } from './pages/StudioView';
-import { ArtLabView } from './pages/ArtLabView';
-import { ArtShopView } from './pages/ArtShopView';
-import { LegalView } from './pages/LegalView';
+
+const CaseStudyView = lazy(() =>
+  import('./pages/CaseStudyView').then((m) => ({ default: m.CaseStudyView }))
+);
+const StudioView = lazy(() =>
+  import('./pages/StudioView').then((m) => ({ default: m.StudioView }))
+);
+const ArtLabView = lazy(() =>
+  import('./pages/ArtLabView').then((m) => ({ default: m.ArtLabView }))
+);
+const ArtShopView = lazy(() =>
+  import('./pages/ArtShopView').then((m) => ({ default: m.ArtShopView }))
+);
+const LegalView = lazy(() =>
+  import('./pages/LegalView').then((m) => ({ default: m.LegalView }))
+);
 
 export default function App() {
   const [route, setRoute] = useState<RoutePath>({ page: 'home' });
@@ -101,7 +111,6 @@ export default function App() {
     <div className="min-h-screen bg-canvas text-ink">
       {!introDone && <Preloader onComplete={() => setIntroDone(true)} />}
       <CustomCursor />
-      <AwwwardsBadge />
 
       {route.page === 'home' ? (
         <main id="main">
@@ -124,18 +133,20 @@ export default function App() {
             onNavigate={handleNavigate}
           />
           <main id="main">
-            {route.page === 'work' && (
-              <CaseStudyView slug={route.slug} onNavigate={handleNavigate} />
-            )}
-            {route.page === 'studio' && <StudioView onNavigate={handleNavigate} />}
-            {route.page === 'art-lab' && <ArtLabView onNavigate={handleNavigate} />}
-            {route.page === 'shop' && <ArtShopView onNavigate={handleNavigate} />}
-            {route.page === 'privacy' && (
-              <LegalView type="privacy" onNavigate={handleNavigate} />
-            )}
-            {route.page === 'terms' && (
-              <LegalView type="terms" onNavigate={handleNavigate} />
-            )}
+            <Suspense fallback={<div className="min-h-[70vh] bg-canvas" />}>
+              {route.page === 'work' && (
+                <CaseStudyView slug={route.slug} onNavigate={handleNavigate} />
+              )}
+              {route.page === 'studio' && <StudioView onNavigate={handleNavigate} />}
+              {route.page === 'art-lab' && <ArtLabView onNavigate={handleNavigate} />}
+              {route.page === 'shop' && <ArtShopView onNavigate={handleNavigate} />}
+              {route.page === 'privacy' && (
+                <LegalView type="privacy" onNavigate={handleNavigate} />
+              )}
+              {route.page === 'terms' && (
+                <LegalView type="terms" onNavigate={handleNavigate} />
+              )}
+            </Suspense>
           </main>
         </>
       )}

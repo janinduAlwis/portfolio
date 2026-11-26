@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { ArrowLeft, Move, RotateCcw, X } from 'lucide-react';
 import { LabNodePiece, PORTFOLIO_DATA } from '../data/portfolioData';
 import { RoutePath } from '../components/Navbar';
+import { OptimizedImage } from '../components/OptimizedImage';
 
 interface ArtLabViewProps {
   onNavigate: (route: RoutePath) => void;
@@ -119,7 +120,7 @@ export const ArtLabView: React.FC<ArtLabViewProps> = ({ onNavigate }) => {
           style={{
             transform: `translate3d(${offset.x}px, ${offset.y}px, 0)`,
             width: '1400px',
-            height: '1000px',
+            height: '720px',
           }}
         >
           {PORTFOLIO_DATA.labNodes.map((piece) => (
@@ -139,11 +140,13 @@ export const ArtLabView: React.FC<ArtLabViewProps> = ({ onNavigate }) => {
               className="group absolute overflow-hidden border border-ink/15 text-left shadow-sm transition-transform duration-300 ease-out-soft hover:-translate-y-1 hover:shadow-xl"
             >
               {piece.image ? (
-                <img
+                <OptimizedImage
                   src={piece.image}
                   alt={piece.title}
+                  sizes="360px"
                   draggable={false}
-                  loading="eager"
+                  loading="lazy"
+                  decoding="async"
                   referrerPolicy="no-referrer"
                   className={`h-full w-full transition-transform duration-500 group-hover:scale-105 ${
                     piece.imageFit === 'contain' ? 'object-contain' : 'object-cover'
@@ -219,9 +222,12 @@ export const ArtLabView: React.FC<ArtLabViewProps> = ({ onNavigate }) => {
             </div>
 
             {selectedPiece.image ? (
-              <img
+              <OptimizedImage
                 src={selectedPiece.image}
                 alt={selectedPiece.title}
+                sizes="(max-width: 639px) 92vw, 672px"
+                loading="eager"
+                decoding="async"
                 referrerPolicy="no-referrer"
                 className={`mt-6 max-h-[55vh] w-full ${
                   selectedPiece.imageFit === 'contain' ? 'object-contain' : 'object-cover'

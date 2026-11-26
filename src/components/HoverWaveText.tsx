@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 
 interface HoverWaveTextProps {
   text: string;
@@ -9,34 +9,38 @@ interface HoverWaveTextProps {
  * Splits text into word/character spans matching Pamidor's [data-hw="true"]
  * staggered tomato-red (#D12424) character hover wave.
  */
-export const HoverWaveText: React.FC<HoverWaveTextProps> = ({ text, className = '' }) => {
-  let charIndex = 0;
-  const words = text.split(' ');
+export const HoverWaveText: React.FC<HoverWaveTextProps> = React.memo(({ text, className = '' }) => {
+  const wordsWithOffsets = useMemo(() => {
+    let charIndex = 0;
+    return text.split(' ').map((word) => {
+      const chars = Array.from(word).map((ch) => ({ ch, idx: charIndex++ }));
+      return { word, chars };
+    });
+  }, [text]);
 
   return (
     <span className={className} aria-label={text}>
       <span className="sr-only">{text}</span>
       <span aria-hidden="true">
-        {words.map((word, wIdx) => (
+        {wordsWithOffsets.map(({ word, chars }, wIdx) => (
           <React.Fragment key={`${word}-${wIdx}`}>
             <span className="inline-block whitespace-nowrap">
-              {Array.from(word).map((ch, cIdx) => {
-                const idx = charIndex++;
-                return (
-                  <span
-                    key={`${idx}-${cIdx}`}
-                    data-hw-char="true"
-                    data-ch={ch}
-                    className="inline-block"
-                    style={{ '--hwi': idx } as React.CSSProperties}
-                  />
-                );
-              })}
+              {chars.map(({ ch, idx }, cIdx) => (
+                <span
+                  key={`${idx}-${cIdx}`}
+                  data-hw-char="true"
+                  data-ch={ch}
+                  className="inline-block"
+                  style={{ '--hwi': idx } as React.CSSProperties}
+                />
+              ))}
             </span>
-            {wIdx < words.length - 1 ? ' ' : ''}
+            {wIdx < wordsWithOffsets.length - 1 ? ' ' : ''}
           </React.Fragment>
         ))}
       </span>
     </span>
   );
-};
+});
+
+HoverWaveText.displayName = 'HoverWaveText';

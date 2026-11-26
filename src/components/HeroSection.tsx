@@ -1,17 +1,7 @@
 import React, { useEffect, useRef } from 'react';
-import {
-  Bot,
-  Code2,
-  Cpu,
-  Database,
-  Radio,
-  Smartphone,
-  Terminal,
-  Workflow,
-  type LucideIcon,
-} from 'lucide-react';
 import { PORTFOLIO_DATA } from '../data/portfolioData';
 import { Navbar, RoutePath } from './Navbar';
+import { OptimizedImage } from './OptimizedImage';
 
 interface HeroSectionProps {
   menuOpen: boolean;
@@ -21,59 +11,45 @@ interface HeroSectionProps {
 
 interface TrailIconItem {
   id: string;
-  label: string;
-  Icon: LucideIcon;
-  cardClass: string;
+  src: string;
 }
 
 const TRAIL_ICONS: TrailIconItem[] = [
   {
-    id: 'react-next',
-    label: 'React / Next',
-    Icon: Code2,
-    cardClass: 'border-white/20 bg-night text-canvas',
+    id: 'symbol-1',
+    src: '/assets/aistudio/ChatGPT_Image_Nov_26__2026__10_34_54_AM-1_be18f3c9.png',
   },
   {
-    id: 'mobile-expo',
-    label: 'Mobile',
-    Icon: Smartphone,
-    cardClass: 'border-ink/20 bg-canvas text-ink',
+    id: 'symbol-2',
+    src: '/assets/aistudio/ChatGPT_Image_Nov_26__2026__10_35_01_AM-2_4f81eec5.png',
   },
   {
-    id: 'ai-agents',
-    label: 'AI Agents',
-    Icon: Bot,
-    cardClass: 'border-accent bg-accent text-white',
+    id: 'symbol-4',
+    src: '/assets/aistudio/ChatGPT_Image_Nov_26__2026__10_35_05_AM-4_34ac1c20.png',
   },
   {
-    id: 'iot-esp',
-    label: 'IoT / ESP',
-    Icon: Cpu,
-    cardClass: 'border-white/20 bg-night text-canvas',
+    id: 'symbol-5',
+    src: '/assets/aistudio/ChatGPT_Image_Nov_26__2026__10_35_08_AM-5_838f22ff.png',
   },
   {
-    id: 'databases',
-    label: 'Databases',
-    Icon: Database,
-    cardClass: 'border-ink/20 bg-canvas text-ink',
+    id: 'symbol-6',
+    src: '/assets/aistudio/ChatGPT_Image_Nov_26__2026__10_35_11_AM-6_453fb98d.png',
   },
   {
-    id: 'n8n-flow',
-    label: 'n8n Flow',
-    Icon: Workflow,
-    cardClass: 'border-white/20 bg-night text-canvas',
+    id: 'symbol-7',
+    src: '/assets/aistudio/ChatGPT_Image_Nov_26__2026__10_35_14_AM-7_28e2bf50.png',
   },
   {
-    id: 'typescript',
-    label: 'TypeScript',
-    Icon: Terminal,
-    cardClass: 'border-accent bg-accent text-white',
+    id: 'symbol-8',
+    src: '/assets/aistudio/ChatGPT_Image_Nov_26__2026__10_35_16_AM-8_8cfe7366.png',
   },
   {
-    id: 'mqtt',
-    label: 'MQTT',
-    Icon: Radio,
-    cardClass: 'border-ink/20 bg-canvas text-ink',
+    id: 'symbol-9',
+    src: '/assets/aistudio/ChatGPT_Image_Nov_26__2026__10_35_21_AM-9_caeab0c1.png',
+  },
+  {
+    id: 'symbol-10',
+    src: '/assets/aistudio/ChatGPT_Image_Nov_26__2026__10_35_22_AM-10_805e193f.png',
   },
 ];
 
@@ -86,19 +62,64 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
   onToggleMenu,
   onNavigate,
 }) => {
+  const sectionRef = useRef<HTMLElement>(null);
   const trailContainerRef = useRef<HTMLDivElement>(null);
   const personImageRef = useRef<HTMLDivElement>(null);
+  const portraitImgRef = useRef<HTMLImageElement>(null);
 
   useEffect(() => {
+    const section = sectionRef.current;
     const container = trailContainerRef.current;
-    const parent = personImageRef.current;
+    const person = personImageRef.current;
+    const img = portraitImgRef.current;
     if (
+      !section ||
       !container ||
-      !parent ||
+      !person ||
+      !img ||
       !window.matchMedia('(hover: hover) and (prefers-reduced-motion: no-preference)').matches
     ) {
       return;
     }
+
+    // Pixel-accurate alpha silhouette mask so symbols only trigger on the person (head + body), never background
+    let maskData: Uint8ClampedArray | null = null;
+    let maskW = 0;
+    let maskH = 0;
+
+    const buildAlphaMask = () => {
+      if (!img.naturalWidth || !img.naturalHeight) return;
+      const targetW = 192;
+      const targetH = Math.max(1, Math.round((img.naturalHeight / img.naturalWidth) * targetW));
+      const canvas = document.createElement('canvas');
+      canvas.width = targetW;
+      canvas.height = targetH;
+      const ctx = canvas.getContext('2d');
+      if (!ctx) return;
+      ctx.drawImage(img, 0, 0, targetW, targetH);
+      maskData = ctx.getImageData(0, 0, targetW, targetH).data;
+      maskW = targetW;
+      maskH = targetH;
+    };
+
+    if (img.complete && img.naturalWidth > 0) {
+      buildAlphaMask();
+    } else {
+      img.addEventListener('load', buildAlphaMask, { once: true });
+    }
+
+    const isOverPerson = (clientX: number, clientY: number) => {
+      if (!maskData || !maskW || !maskH) return false;
+      const iRect = img.getBoundingClientRect();
+      if (iRect.width <= 0 || iRect.height <= 0) return false;
+      const u = (clientX - iRect.left) / iRect.width;
+      const v = (clientY - iRect.top) / iRect.height;
+      if (u < 0 || u >= 1 || v < 0 || v >= 1) return false;
+      const px = Math.min(maskW - 1, Math.max(0, Math.floor(u * maskW)));
+      const py = Math.min(maskH - 1, Math.max(0, Math.floor(v * maskH)));
+      const alpha = maskData[(py * maskW + px) * 4 + 3];
+      return alpha > 20;
+    };
 
     const slots = Array.from(container.children).map((el) => ({
       el: el as HTMLDivElement,
@@ -159,6 +180,9 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
 
     const onPointerMove = (e: PointerEvent) => {
       if (e.pointerType !== 'mouse') return;
+      if ((e.target as HTMLElement | null)?.closest('button, a')) return;
+      if (!isOverPerson(e.clientX, e.clientY)) return;
+
       const now = performance.now();
       const rect = container.getBoundingClientRect();
       const x = e.clientX - rect.left;
@@ -172,15 +196,17 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
       spawn(x, y);
     };
 
-    parent.addEventListener('pointermove', onPointerMove, { passive: true });
+    section.addEventListener('pointermove', onPointerMove, { passive: true });
     return () => {
-      parent.removeEventListener('pointermove', onPointerMove);
+      section.removeEventListener('pointermove', onPointerMove);
+      img.removeEventListener('load', buildAlphaMask);
       slots.forEach((s) => s.anim?.cancel());
     };
   }, []);
 
   return (
     <section
+      ref={sectionRef}
       id="top"
       className="relative min-h-[100svh] w-full overflow-hidden"
       style={{
@@ -201,9 +227,14 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
             ref={personImageRef}
             className="pointer-events-auto absolute bottom-0 right-[-8%] z-[1] h-[68svh] w-auto sm:right-[-2%] sm:h-[76svh] lg:right-[0%] lg:h-[100svh]"
           >
-            <img
+            <OptimizedImage
+              ref={portraitImgRef}
               src={PORTFOLIO_DATA.assets.coverPortrait}
               alt={PORTFOLIO_DATA.brand.fullName}
+              sizes="(max-width: 639px) 60vw, 45vw"
+              loading="eager"
+              decoding="async"
+              fetchPriority="high"
               draggable={false}
               className="pointer-events-none block h-full w-auto max-w-none select-none object-contain object-bottom"
             />
@@ -214,15 +245,15 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
             aria-hidden="true"
             className="pointer-events-none absolute inset-0 z-10"
           >
-            {TRAIL_ICONS.map(({ id, label, Icon, cardClass }) => (
+            {TRAIL_ICONS.map(({ id, src }) => (
               <div
                 key={id}
                 className="absolute left-0 top-0"
-                style={{ width: 'calc(88 * var(--px))', height: 'calc(88 * var(--px))' }}
+                style={{ width: 'calc(84 * var(--px))', height: 'calc(84 * var(--px))' }}
               >
                 <div
                   data-trail-card="true"
-                  className={`flex h-full w-full flex-col items-center justify-center gap-1.5 border opacity-0 shadow-2xl ${cardClass}`}
+                  className="flex h-full w-full items-center justify-center opacity-0"
                   style={{
                     WebkitMaskImage:
                       'linear-gradient(105deg, #000 45%, rgba(0, 0, 0, 0) 62%)',
@@ -236,30 +267,34 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
                     maskPosition: '100% 0%',
                   }}
                 >
-                  <Icon className="h-7 w-7" strokeWidth={1.6} />
-                  <span className="font-space text-[9px] font-medium uppercase tracking-[0.08em] opacity-80">
-                    {label}
-                  </span>
+                  <OptimizedImage
+                    src={src}
+                    alt=""
+                    sizes="120px"
+                    draggable={false}
+                    loading="eager"
+                    decoding="async"
+                    className="h-full w-full select-none object-contain"
+                  />
                 </div>
               </div>
             ))}
           </div>
 
           <div className="pointer-events-none relative z-20 flex w-full flex-col lg:max-w-[52%] lg:translate-y-[6vh]">
-            <div className="pointer-events-auto">
             <h1
               data-hero-name="true"
               data-hero-3d-lines="true"
-              className="-ml-[0.04em] w-full text-display font-medium text-ink"
+              className="pointer-events-auto -ml-[0.04em] w-fit text-display font-medium text-ink"
               style={{ '--h3d': '140ms' } as React.CSSProperties}
             >
-              <span className="block">{PORTFOLIO_DATA.brand.firstName}</span>
-              <span className="block">{PORTFOLIO_DATA.brand.lastName}</span>
+              <span className="block w-fit">{PORTFOLIO_DATA.brand.firstName}</span>
+              <span className="block w-fit">{PORTFOLIO_DATA.brand.lastName}</span>
             </h1>
 
             <p
               data-hero-3d-lines="true"
-              className="mt-4 text-body-lg text-ink lg:mt-[calc(16*var(--px))]"
+              className="pointer-events-auto mt-4 w-fit text-body-lg text-ink lg:mt-[calc(16*var(--px))]"
               style={{ '--h3d': '340ms' } as React.CSSProperties}
             >
               <span className="block">{PORTFOLIO_DATA.brand.tagline}</span>
@@ -267,7 +302,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
             </p>
 
             <div data-hero-3d="true" style={{ '--h3d': '520ms' } as React.CSSProperties}>
-              <div className="mt-7 flex max-w-[calc(500*var(--px))] flex-wrap gap-[calc(8*var(--px))] lg:mt-[calc(28*var(--px))]">
+              <div className="pointer-events-auto mt-7 flex w-fit max-w-[calc(500*var(--px))] flex-wrap gap-[calc(8*var(--px))] lg:mt-[calc(28*var(--px))]">
                 {PORTFOLIO_DATA.disciplines.map((discipline) => (
                   <span
                     key={discipline}
@@ -278,7 +313,6 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
                 ))}
               </div>
             </div>
-          </div>
           </div>
         </div>
 

@@ -3,6 +3,7 @@ import { ArrowUpRight, Check } from 'lucide-react';
 import { PORTFOLIO_DATA } from '../data/portfolioData';
 import { HoverWaveText } from './HoverWaveText';
 import { RoutePath } from './Navbar';
+import { OptimizedImage } from './OptimizedImage';
 import { Reveal } from './Reveal';
 
 interface ContactSectionProps {
@@ -17,18 +18,40 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ onNavigate }) =>
   const [message, setMessage] = useState('');
   const [submitted, setSubmitted] = useState(false);
   const [error, setError] = useState('');
+  const [loadVideo, setLoadVideo] = useState(false);
+  const sectionRef = useRef<HTMLElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
 
   useEffect(() => {
-    const video = videoRef.current;
-    if (!video) return;
-    video.muted = true;
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-      video.pause();
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    const conn = (navigator as Navigator & { connection?: { saveData?: boolean } }).connection;
+    if (conn?.saveData) return;
+
+    const section = sectionRef.current;
+    if (!section || typeof IntersectionObserver === 'undefined') {
+      setLoadVideo(true);
       return;
     }
-    video.play().catch(() => {});
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setLoadVideo(true);
+          observer.disconnect();
+        }
+      },
+      { rootMargin: '400px 0px' }
+    );
+    observer.observe(section);
+    return () => observer.disconnect();
   }, []);
+
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!loadVideo || !video) return;
+    video.muted = true;
+    video.play().catch(() => {});
+  }, [loadVideo]);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -43,21 +66,32 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ onNavigate }) =>
   return (
     <div className="relative bg-canvas">
       <section
+        ref={sectionRef}
         id="start-project"
         className="relative flex min-h-[100dvh] w-full flex-col justify-center overflow-hidden py-8 sm:py-12 lg:h-[100dvh] lg:min-h-0 lg:py-6"
       >
-        <video
-          ref={videoRef}
-          src={PORTFOLIO_DATA.assets.contactSkyVideo}
-          autoPlay
-          loop
-          muted
-          playsInline
-          preload="auto"
-          poster={PORTFOLIO_DATA.assets.contactSky}
+        <OptimizedImage
+          src={PORTFOLIO_DATA.assets.contactSky}
+          alt=""
           aria-hidden="true"
+          sizes="100vw"
+          loading="lazy"
+          decoding="async"
           className="pointer-events-none absolute inset-0 h-full w-full object-cover"
         />
+        {loadVideo && (
+          <video
+            ref={videoRef}
+            src={PORTFOLIO_DATA.assets.contactSkyVideo}
+            autoPlay
+            loop
+            muted
+            playsInline
+            preload="metadata"
+            aria-hidden="true"
+            className="pointer-events-none absolute inset-0 h-full w-full object-cover"
+          />
+        )}
         <div
           aria-hidden="true"
           className="absolute inset-0 bg-gradient-to-b from-black/10 via-transparent to-[#0D0D0B]/35"

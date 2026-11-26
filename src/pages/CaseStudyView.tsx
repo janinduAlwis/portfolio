@@ -3,6 +3,7 @@ import { ArrowLeft, ArrowUpRight, Github } from 'lucide-react';
 import { PORTFOLIO_DATA, ProjectCaseStudy } from '../data/portfolioData';
 import { HoverWaveText } from '../components/HoverWaveText';
 import { RoutePath } from '../components/Navbar';
+import { OptimizedImage } from '../components/OptimizedImage';
 
 interface CaseStudyViewProps {
   slug: string;
@@ -64,9 +65,13 @@ export const CaseStudyView: React.FC<CaseStudyViewProps> = ({ slug, onNavigate }
 
         {/* Cover Image */}
         <div className="mt-10 overflow-hidden bg-night lg:mt-14">
-          <img
+          <OptimizedImage
             src={project.coverImage}
             alt={project.coverAlt}
+            sizes="(max-width: 639px) 92vw, (max-width: 1023px) 90vw, 1312px"
+            loading="eager"
+            decoding="async"
+            fetchPriority="high"
             referrerPolicy="no-referrer"
             className="aspect-[16/9] w-full object-cover"
           />

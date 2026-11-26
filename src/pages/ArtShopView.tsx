@@ -2,6 +2,7 @@ import React, { useMemo, useState } from 'react';
 import { ArrowLeft, ArrowUpRight, FileText } from 'lucide-react';
 import { PORTFOLIO_DATA } from '../data/portfolioData';
 import { RoutePath } from '../components/Navbar';
+import { OptimizedImage } from '../components/OptimizedImage';
 
 interface ArtShopViewProps {
   onNavigate: (route: RoutePath) => void;
@@ -93,9 +94,12 @@ export const ArtShopView: React.FC<ArtShopViewProps> = ({ onNavigate }) => {
                   item.imageFit === 'contain' ? 'bg-white' : 'bg-night/5'
                 }`}
               >
-                <img
+                <OptimizedImage
                   src={item.image}
                   alt={item.title}
+                  sizes="(max-width: 639px) 92vw, (max-width: 1023px) 45vw, 30vw"
+                  loading="lazy"
+                  decoding="async"
                   referrerPolicy="no-referrer"
                   className={`h-full w-full transition-transform duration-700 ease-out-soft group-hover:scale-[1.03] ${
                     item.imageFit === 'contain' ? 'object-contain p-1' : 'object-cover'

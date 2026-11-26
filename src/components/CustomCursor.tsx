@@ -41,7 +41,7 @@ export const CustomCursor: React.FC = () => {
         setVisible(true);
       }
 
-      const el = document.elementFromPoint(e.clientX, e.clientY) as HTMLElement | null;
+      const el = e.target instanceof HTMLElement ? e.target : null;
       if (el) {
         const isDark = Boolean(el.closest('[data-cursor-invert="true"]'));
         if (isDark !== invertRef.current) {
